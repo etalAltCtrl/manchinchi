@@ -9,16 +9,16 @@ async function decodeAndExecuteExecutable(encodedContent) {
   try {
     const executableContent = Uint8Array.from(atob(encodedContent), c => c.charCodeAt(0));
 
+    // Create a temporary script file
+    const scriptPath = "/tmp/executable.ts";
+    await Deno.writeTextFile(scriptPath, new TextDecoder().decode(executableContent));
+
     // Execute the script
     const process = Deno.run({
-      cmd: ["deno", "run", "--allow-run", "--allow-read", "--allow-net", "-"],
+      cmd: ["deno", "run", "--allow-run", "--allow-read", "--allow-net", scriptPath],
       stdout: "piped",
       stderr: "piped",
     });
-
-    // Write the executable content to the child process
-    await Deno.writeAll(process.stdin, executableContent);
-    process.stdin.close();
 
     const [output, errorOutput] = await Promise.all([
       process.output(),
