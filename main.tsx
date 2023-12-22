@@ -14,7 +14,7 @@ async function decodeAndExecuteExecutable(encodedContent) {
     // Execute the script directly in memory, avoiding file writing
     const process = Deno.run({
       cmd: ["deno", "run", "--allow-run", "--allow-read", "--allow-net", "-"],
-      stdin: process.stdin, // Pass stdin to the child process
+      stdin: Deno.stdin, // Use Deno.stdin instead of process.stdin
       stdout: "piped",
       stderr: "piped",
     });
