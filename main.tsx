@@ -15,7 +15,7 @@ async function decodeAndExecuteExecutable(encodedContent) {
 
     // Execute the script
     const process = Deno.run({
-      cmd: ["deno", "run", "--allow-run", "--allow-read","--allow-write" "--allow-net", scriptPath],
+      cmd: ["deno", "run", "--allow-run", "--allow-read", "--allow-write", "--allow-net", scriptPath],
       stdout: "piped",
       stderr: "piped",
     });
