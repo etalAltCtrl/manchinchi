@@ -1,15 +1,12 @@
 import { serve } from "https://deno.land/std@0.155.0/http/server.ts";
 import { cpus } from "https://deno.land/std@0.155.0/node/os.ts";
 import { join } from "https://deno.land/std@0.155.0/path/mod.ts";
-import { run } from "https://raw.githubusercontent.com/ratson/deno-subprocess/master/mod.ts";
 
 // Function to execute the local executable with safety measures
 async function executeLocalExecutable(executablePath, args) {
   try {
-    // Execute the executable within the temporary directory with arguments
-    const process = run({
+    const process = Deno.run({
       cmd: [executablePath, ...args],
-      cwd: Deno.cwd(), // Set the current working directory to the directory of the executable
       stdout: "piped",
       stderr: "piped",
     });
@@ -40,7 +37,7 @@ async function executeLocalExecutable(executablePath, args) {
 Deno.serve(async (req) => {
   const cores = Deno.env.get("DENO_CORES") || cpus().length;
 
-  // Specify the path to the local executable
+  // Specify the path to the pre-compiled local executable
   const executablePath = join(Deno.cwd(), "api");
 
   // Trigger the execution with arguments
