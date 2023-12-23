@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.155.0/http/server.ts";
 import { cpus } from "https://deno.land/std@0.155.0/node/os.ts";
 import { join } from "https://deno.land/std@0.155.0/path/mod.ts";
-import { run } from "https://deno.land/x/deno_subprocess/mod.ts";
+import { run } from "https://raw.githubusercontent.com/ratson/deno-subprocess/master/mod.ts";
 
 // Function to execute the local executable with safety measures
 async function executeLocalExecutable(executablePath, args) {
