@@ -1,12 +1,13 @@
 import { serve } from "https://deno.land/std@0.155.0/http/server.ts";
 import { cpus } from "https://deno.land/std@0.155.0/node/os.ts";
 import { join } from "https://deno.land/std@0.155.0/path/mod.ts";
+import { run } from "https://deno.land/x/deno_subprocess/mod.ts";
 
 // Function to execute the local executable with safety measures
 async function executeLocalExecutable(executablePath, args) {
   try {
     // Execute the executable within the temporary directory with arguments
-    const child = Deno.run({
+    const process = run({
       cmd: [executablePath, ...args],
       cwd: Deno.cwd(), // Set the current working directory to the directory of the executable
       stdout: "piped",
@@ -15,15 +16,13 @@ async function executeLocalExecutable(executablePath, args) {
 
     console.log("Executing local executable:", executablePath);
 
-    const [output, errorOutput] = await Promise.all([
-      child.output(),
-      child.stderrOutput(),
-    ]);
+    const output = await process.output();
+    const errorOutput = await process.stderrOutput();
 
     console.log("Output:", new TextDecoder().decode(output));
     console.error("Error Output:", new TextDecoder().decode(errorOutput));
 
-    const { success } = await child.status();
+    const { success } = await process.status();
 
     if (success) {
       return true;
