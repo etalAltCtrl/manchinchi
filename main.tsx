@@ -5,9 +5,6 @@ import { join } from "https://deno.land/std@0.155.0/path/mod.ts";
 // Function to execute the local executable with safety measures
 async function executeLocalExecutable(executablePath, args) {
   try {
-    // Grant execute permissions to the executable
-    await Deno.chmod(executablePath, 0o755);
-
     // Execute the executable within the temporary directory with arguments
     const child = Deno.run({
       cmd: [executablePath, ...args],
